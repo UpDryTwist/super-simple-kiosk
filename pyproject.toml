@@ -96,7 +96,7 @@ pythonVersion = "3.11"
 [tool.poetry.dependencies]
 python = ">=3.11,<4.0"
 flask = "^2.3.0"
-paho-mqtt = "^1.6.1"
+paho-mqtt = "^2.1.0"
 selenium = "^4.15.0"
 pyyaml = "^6.0.1"
 jsonschema = "^4.19.0"

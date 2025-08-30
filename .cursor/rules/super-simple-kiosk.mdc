@@ -1,0 +1,7 @@
+---
+description: Basic rules for Super Simple Kiosk
+globs:
+alwaysApply: true
+---
+- The PRD document is in docs/super-simple-kiosk-prd.md
+- Use task-master-ai to manage tasks

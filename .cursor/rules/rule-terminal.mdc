@@ -1,0 +1,7 @@
+---
+description:  Create a new terminal when running terminal commands
+globs:
+alwaysApply: true
+---
+- Whenever running a terminal command, create a new terminal
+- Run all commands using `pwsh -Command "<Command Text>"`

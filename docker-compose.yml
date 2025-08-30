@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  web_rotator:
+    build: .
+    container_name: web_rotator
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./config:/config
+      - ./data:/data
+      - ./logs:/logs
+    environment:
+      - FLASK_ENV=production
+      - FLASK_DEBUG=false
+      - DISPLAY_CONFIG_FILE=/config/urls.yaml
+      - DISPLAY_STATE_FILE=/data/state.json
+      - MQTT_BROKER=mqtt
+      - MQTT_PORT=1883
+      - MQTT_USERNAME=display_client
+      - MQTT_PASSWORD=secure_password
+      - DEVICE_ID=display_001
+      - LOG_LEVEL=INFO
+      - LOG_FORMAT=json
+    depends_on:
+      - mqtt
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+
+  mqtt:
+    image: eclipse-mosquitto:2.0
+    container_name: mqtt_broker
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    healthcheck:
+      test: ["CMD", "mosquitto_pub", "-h", "localhost", "-t", "test", "-m", "test"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
